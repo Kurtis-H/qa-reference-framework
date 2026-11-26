@@ -6,7 +6,7 @@
 
 It tests [vuln-shop](https://github.com/Kurtis-H/vuln-shop), a small shop app I built with intentional security bugs and a switch that turns them on or off.
 
-📊 **Latest reports:** https://Kurtis-H.github.io/qa-reference-framework/
+**Latest reports:** https://Kurtis-H.github.io/qa-reference-framework/
 
 ## What's covered
 
