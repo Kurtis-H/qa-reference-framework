@@ -1,0 +1,25 @@
+{
+  "name": "qa-reference-framework",
+  "version": "0.1.0",
+  "description": "A reference QA automation framework: UI, API contract, accessibility, performance and security tests against vuln-shop.",
+  "scripts": {
+    "test": "playwright test",
+    "test:smoke": "playwright test --grep @smoke",
+    "test:api": "playwright test --project=api",
+    "test:ui": "playwright test --project=chromium",
+    "test:a11y": "playwright test --grep @a11y",
+    "test:security": "playwright test --grep @security",
+    "report": "playwright show-report",
+    "typecheck": "tsc --noEmit"
+  },
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "@axe-core/playwright": "^4.14.1",
+    "@playwright/test": "^1.65.1",
+    "@types/node": "^26.6.7",
+    "typescript": "^7.0.2",
+    "zod": "^4.6.7"
+  },
+  "private": true
+}

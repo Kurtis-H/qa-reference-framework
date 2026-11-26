@@ -1,0 +1,27 @@
+name: Start vuln-shop
+description: Checks out vuln-shop and runs both modes (vulnerable on :8000, secure on :8001).
+inputs:
+  repository:
+    description: owner/repo of vuln-shop
+    required: true
+runs:
+  using: composite
+  steps:
+    - uses: actions/checkout@v4
+      with:
+        repository: ${{ inputs.repository }}
+        path: vuln-shop
+    - name: Start containers
+      shell: bash
+      working-directory: vuln-shop
+      run: docker compose up -d --build
+    - name: Wait until healthy
+      shell: bash
+      run: |
+        for port in 8000 8001; do
+          for i in $(seq 1 30); do
+            curl -sf "http://localhost:$port/health" && echo && break
+            [ "$i" = 30 ] && { docker compose -f vuln-shop/docker-compose.yml logs; exit 1; }
+            sleep 1
+          done
+        done
