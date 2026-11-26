@@ -16,7 +16,7 @@ jobs:
     name: UI, API, a11y and security tests (secure mode)
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - uses: ./.github/actions/start-vuln-shop
         with:
           repository: ${{ env.VULN_SHOP_REPO }}
@@ -45,7 +45,7 @@ jobs:
     name: Prove the security suite catches real bugs
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - uses: ./.github/actions/start-vuln-shop
         with:
           repository: ${{ env.VULN_SHOP_REPO }}
@@ -73,7 +73,7 @@ jobs:
     name: k6 performance smoke
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - uses: ./.github/actions/start-vuln-shop
         with:
           repository: ${{ env.VULN_SHOP_REPO }}
@@ -91,7 +91,7 @@ jobs:
     name: ZAP and Trivy scans
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - uses: ./.github/actions/start-vuln-shop
         with:
           repository: ${{ env.VULN_SHOP_REPO }}
