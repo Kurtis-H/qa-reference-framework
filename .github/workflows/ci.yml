@@ -16,11 +16,11 @@ jobs:
     name: UI, API, a11y and security tests (secure mode)
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v7
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
       - uses: ./.github/actions/start-vuln-shop
         with:
           repository: ${{ env.VULN_SHOP_REPO }}
-      - uses: actions/setup-node@v7
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
         with:
           node-version: 22
           cache: npm
@@ -33,7 +33,7 @@ jobs:
         run: npx playwright test
         env:
           BASE_URL: http://localhost:8001
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
         if: always()
         with:
           name: playwright-report
@@ -45,11 +45,11 @@ jobs:
     name: Prove the security suite catches real bugs
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v7
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
       - uses: ./.github/actions/start-vuln-shop
         with:
           repository: ${{ env.VULN_SHOP_REPO }}
-      - uses: actions/setup-node@v7
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
         with:
           node-version: 22
           cache: npm
@@ -73,15 +73,15 @@ jobs:
     name: k6 performance smoke
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v7
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
       - uses: ./.github/actions/start-vuln-shop
         with:
           repository: ${{ env.VULN_SHOP_REPO }}
-      - uses: grafana/setup-k6-action@v1
+      - uses: grafana/setup-k6-action@c47136d33d365efbeb9ae7266908b5dcf98cdece # v1.3.0
       - run: mkdir -p reports && k6 run perf/smoke.js
         env:
           BASE_URL: http://localhost:8001
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
         if: always()
         with:
           name: k6-summary
@@ -91,7 +91,7 @@ jobs:
     name: ZAP and Trivy scans
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v7
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
       - uses: ./.github/actions/start-vuln-shop
         with:
           repository: ${{ env.VULN_SHOP_REPO }}
@@ -104,7 +104,7 @@ jobs:
               zap-baseline.py -t "http://localhost:$port" -r "zap-$name.html" -J "zap-$name.json" -I
           done
       - name: Trivy dependency, secret and config scan (of vuln-shop)
-        uses: aquasecurity/trivy-action@v0.36.0
+        uses: aquasecurity/trivy-action@ed142fd0673e97e23eac54620cfb913e5ce36c25 # v0.36.0
         with:
           scan-type: fs
           scan-ref: vuln-shop
@@ -112,7 +112,7 @@ jobs:
           format: json
           output: reports/trivy.json
           exit-code: "0" # report-only; triage below decides what matters
-      - uses: actions/setup-python@v7
+      - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0
         with:
           python-version: "3.12"
       - name: Triage all scan results (scan-triage-bot)
@@ -121,7 +121,7 @@ jobs:
           scan-triage reports/zap-vulnerable.json reports/zap-secure.json reports/trivy.json \
             -o reports/scan-triage.md --json-output reports/scan-triage.json
           cat reports/scan-triage.md >> "$GITHUB_STEP_SUMMARY"
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
         if: always()
         with:
           name: scan-reports
@@ -139,7 +139,7 @@ jobs:
       name: github-pages
       url: ${{ steps.deploy.outputs.page_url }}
     steps:
-      - uses: actions/download-artifact@v8
+      - uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
         with:
           path: artifacts
       - name: Build report site
@@ -160,8 +160,8 @@ jobs:
           <li><a href="k6-summary.json">k6 performance summary</a></li>
           </ul></body></html>
           HTML
-      - uses: actions/upload-pages-artifact@v3
+      - uses: actions/upload-pages-artifact@56afc609e74202658d3ffba0e8f6dda462b719fa # v3.0.1
         with:
           path: site
       - id: deploy
-        uses: actions/deploy-pages@v5
+        uses: actions/deploy-pages@368f82528645a54fb793d4d04e342629a3f51346 # v5.0.1
